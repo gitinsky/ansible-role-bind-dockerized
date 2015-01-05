@@ -1,0 +1,21 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+{% for zone in bind_slave_zones %}
+zone "{{ zone.zone_name }}" {
+        type slave;
+        masters {
+                {{ zone.master }};
+                };
+        allow-query {
+                any;
+                };
+        file "/etc/bind/zones/slave/{{ zone.zone_name }}.hosts";
+};
+
+{% endfor %}

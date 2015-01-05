@@ -19,6 +19,9 @@
 #- name: chown syncthing volume
 #  command: chown -R {{ syncthing_uid }} {{ ext_syncthing_volume }}
 
+- name: put named.conf.local
+  template: src=named.conf.local dest={{ ext_bind_volume }}/named.conf.local
+
 - name: start a bind container
-  command: docker run -d -p=53:53 -p=53:53/udp -name bind gitinsky/bind:0.1.0
+  command: docker run -d -p=53:53 -p=53:53/udp -v {{ ext_bind_volume }}/named.conf.local:/etc/bind/named.conf.local -name bind gitinsky/bind:0.1.0
   when: result|failed
