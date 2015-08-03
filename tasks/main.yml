@@ -10,3 +10,6 @@
 
 - name: build a Docker image for bind
   command: docker build -t gitinsky/bind:0.1.1 --rm /root/bind-dockerized
+
+- name: tag it as latest
+  command: docker build -t gitinsky/bind:latest --rm /root/bind-dockerized
