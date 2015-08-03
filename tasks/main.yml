@@ -5,23 +5,8 @@
 - name: put Dockerfile
   template: src=Dockerfile dest=/root/bind-dockerized/Dockerfile
 
-- name: put bind.rb
-  template: src=bind.rb dest=/root/bind-dockerized/bind.rb
+- name: put start.sh
+  template: src=start.sh dest=/root/bind-dockerized/start.sh mode=0755
 
 - name: build a Docker image for bind
-  command: docker build -t gitinsky/bind:0.1.0 --rm /root/bind-dockerized
-
-- name: check if a bind container is started
-  command: bash -c "docker ps | grep bind"
-  ignore_errors: True
-  register: result
-
-#- name: chown syncthing volume
-#  command: chown -R {{ syncthing_uid }} {{ ext_syncthing_volume }}
-
-- name: put named.conf.local
-  template: src=named.conf.local dest={{ ext_bind_volume }}/named.conf.local
-
-- name: start a bind container
-  command: docker run -d -p=53:53 -p=53:53/udp -v {{ ext_bind_volume }}/named.conf.local:/etc/bind/named.conf.local -name bind gitinsky/bind:0.1.0
-  when: result|failed
+  command: docker build -t gitinsky/bind:0.1.1 --rm /root/bind-dockerized
